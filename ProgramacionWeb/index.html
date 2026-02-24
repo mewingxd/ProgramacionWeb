@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoShop - Venta de Motos y Refacciones WEBB</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div class="logo">&#127981;</div>
+            <h1>MotoShop</h1>
+            <p>Venta de Motos y Refacciones</p>
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="Ingresa la contrasena" autofocus>
+            </div>
+            <button class="btn-login" onclick="login()">Iniciar Sesion</button>
+            <div class="error-msg" id="errorMsg">Contrasena incorrecta. Intenta de nuevo.</div>
+        </div>
+    </div>
+
+    <!-- APP -->
+    <div class="app-container" id="appPage">
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="logo-icon">&#127981;</span>
+                <h2>MotoShop</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Principal</div>
+                <div class="nav-item active" onclick="navigate('dashboard', this)">
+                    <span class="icon">&#128202;</span> Dashboard
+                </div>
+                <div class="nav-section-title">Catalogo</div>
+                <div class="nav-item" onclick="navigate('motos', this)">
+                    <span class="icon">&#127949;</span> Motos
+                </div>
+                <div class="nav-item" onclick="navigate('refacciones', this)">
+                    <span class="icon">&#128295;</span> Refacciones
+                </div>
+                <div class="nav-section-title">Operaciones</div>
+                <div class="nav-item" onclick="navigate('ventas', this)">
+                    <span class="icon">&#128176;</span> Ventas
+                </div>
+                <div class="nav-item" onclick="navigate('clientes', this)">
+                    <span class="icon">&#128101;</span> Clientes
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">&#128682; Cerrar Sesion</button>
+            </div>
+        </div>
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <button class="btn-menu" onclick="toggleSidebar()">&#9776;</button>
+            <h1 id="pageTitle">Dashboard</h1>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Dashboard -->
+            <div class="section active" id="section-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">&#127949;</div>
+                        <div class="stat-value" id="totalMotos">12</div>
+                        <div class="stat-label">Motos en inventario</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128295;</div>
+                        <div class="stat-value" id="totalRefacciones">48</div>
+                        <div class="stat-label">Refacciones disponibles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128176;</div>
+                        <div class="stat-value" id="totalVentas">23</div>
+                        <div class="stat-label">Ventas este mes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128101;</div>
+                        <div class="stat-value" id="totalClientes">156</div>
+                        <div class="stat-label">Clientes registrados</div>
+                    </div>
+                </div>
+                <div class="section-header">
+                    <h2>Ventas Recientes</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Carlos Martinez</td>
+                                <td>Honda CB250F</td>
+                                <td>$52,000</td>
+                                <td><span class="badge badge-success">Completada</span></td>
+                            </tr>
+                            <tr>
+                                <td>Ana Lopez</td>
+                                <td>Kit de frenos Brembo</td>
+                                <td>$3,800</td>
+                                <td><span class="badge badge-success">Completada</span></td>
+                            </tr>
+                            <tr>
+                                <td>Miguel Torres</td>
+                                <td>Yamaha YZF-R3</td>
+                                <td>$89,000</td>
+                                <td><span class="badge badge-pending">Pendiente</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Motos -->
+            <div class="section" id="section-motos">
+                <div class="section-header">
+                    <h2>Catalogo de Motos</h2>
+                    <button class="btn-new" onclick="openModal('moto')">+ Nueva Moto</button>
+                </div>
+                <div class="cards-grid" id="motosGrid">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
+
+            <!-- Refacciones -->
+            <div class="section" id="section-refacciones">
+                <div class="section-header">
+                    <h2>Refacciones</h2>
+                    <button class="btn-new" onclick="openModal('refaccion')">+ Nueva Refaccion</button>
+                </div>
+                <div class="cards-grid" id="refaccionesGrid">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
+
+            <!-- Ventas -->
+            <div class="section" id="section-ventas">
+                <div class="section-header">
+                    <h2>Registro de Ventas</h2>
+                    <button class="btn-new" onclick="openModal('venta')">+ Nueva Venta</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ventasTableBody">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Clientes -->
+            <div class="section" id="section-clientes">
+                <div class="section-header">
+                    <h2>Clientes</h2>
+                    <button class="btn-new" onclick="openModal('cliente')">+ Nuevo Cliente</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Telefono</th>
+                                <th>Email</th>
+                                <th>Compras</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTableBody">
+                            <!-- Se llena con JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Aside -->
+        <aside class="aside-panel">
+            <div class="aside-section">
+                <h3>Resumen Rapido</h3>
+                <div class="aside-item">
+                    <span class="aside-icon">&#127949;</span>
+                    <div>
+                        <div class="aside-label">Moto mas vendida</div>
+                        <div class="aside-value">Honda CB250F</div>
+                    </div>
+                </div>
+                <div class="aside-item">
+                    <span class="aside-icon">&#128295;</span>
+                    <div>
+                        <div class="aside-label">Refaccion popular</div>
+                        <div class="aside-value">Kit de Frenos Brembo</div>
+                    </div>
+                </div>
+                <div class="aside-item">
+                    <span class="aside-icon">&#11088;</span>
+                    <div>
+                        <div class="aside-label">Mejor cliente</div>
+                        <div class="aside-value">Laura Garcia</div>
+                    </div>
+                </div>
+            </div>
+            <div class="aside-section">
+                <h3>Contacto</h3>
+                <div class="aside-contact">
+                    <p>Uriel</p>
+                    <p>Thania</p>
+                    <p class="aside-role">Administradores</p>
+                </div>
+            </div>
+        </aside>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span>&#127981;</span>
+                    <span>MotoShop</span>
+                </div>
+                <div class="footer-names">
+                    Desarrollado por <strong>Uriel</strong> & <strong>Thania</strong>
+                </div>
+                <div class="footer-copy">
+                    &copy; 2026 MotoShop - Todos los derechos reservados
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2 id="modalTitle">Nuevo Registro</h2>
+            <div id="modalContent"></div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn-save" onclick="saveRecord()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificacion -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // ===== DATOS =====
+        let motos = [
+            { nombre: "Honda CB250F", categoria: "Naked", precio: 52000, desc: "Moto naked deportiva, ideal para ciudad y carretera." },
+            { nombre: "Yamaha YZF-R3", categoria: "Deportiva", precio: 89000, desc: "Deportiva de alto rendimiento con motor de 321cc." },
+            { nombre: "Kawasaki Z400", categoria: "Naked", precio: 95000, desc: "Naked agresiva con 399cc de pura potencia." },
+            { nombre: "Suzuki V-Strom 250", categoria: "Adventure", precio: 68000, desc: "Adventure touring perfecta para viajes largos." },
+            { nombre: "Honda Navi", categoria: "Scooter", precio: 28000, desc: "Scooter compacto, economico y divertido." },
+            { nombre: "Yamaha MT-07", categoria: "Naked", precio: 145000, desc: "Bicilindrica con torque explosivo y diseno agresivo." },
+        ];
+
+        let refacciones = [
+            { nombre: "Kit de Frenos Brembo", categoria: "Frenos", precio: 3800, desc: "Pastillas de freno de alto rendimiento." },
+            { nombre: "Cadena DID 520", categoria: "Transmision", precio: 1200, desc: "Cadena reforzada con O-Ring sellado." },
+            { nombre: "Filtro de Aire K&N", categoria: "Motor", precio: 850, desc: "Filtro lavable de alto flujo." },
+            { nombre: "Aceite Motul 5100 10W40", categoria: "Lubricantes", precio: 450, desc: "Aceite semi-sintetico de alta calidad." },
+            { nombre: "Llanta Pirelli Diablo", categoria: "Llantas", precio: 2800, desc: "Llanta deportiva de gran agarre." },
+            { nombre: "Kit de Clutch Completo", categoria: "Transmision", precio: 1600, desc: "Kit completo con discos y resortes." },
+            { nombre: "Bujias NGK Iridium", categoria: "Motor", precio: 320, desc: "Bujias de iridio para mejor rendimiento." },
+            { nombre: "Amortiguador YSS", categoria: "Suspension", precio: 4500, desc: "Amortiguador trasero ajustable." },
+        ];
+
+        let ventas = [
+            { id: 1, fecha: "2026-02-15", cliente: "Carlos Martinez", producto: "Honda CB250F", monto: 52000, estado: "Completada" },
+            { id: 2, fecha: "2026-02-14", cliente: "Ana Lopez", producto: "Kit de Frenos Brembo", monto: 3800, estado: "Completada" },
+            { id: 3, fecha: "2026-02-14", cliente: "Miguel Torres", producto: "Yamaha YZF-R3", monto: 89000, estado: "Pendiente" },
+            { id: 4, fecha: "2026-02-13", cliente: "Laura Garcia", producto: "Aceite Motul 5100 10W40", monto: 450, estado: "Completada" },
+            { id: 5, fecha: "2026-02-12", cliente: "Roberto Diaz", producto: "Cadena DID 520", monto: 1200, estado: "Completada" },
+        ];
+
+        let clientes = [
+            { nombre: "Carlos Martinez", telefono: "55-1234-5678", email: "carlos@email.com", compras: 3 },
+            { nombre: "Ana Lopez", telefono: "55-2345-6789", email: "ana@email.com", compras: 5 },
+            { nombre: "Miguel Torres", telefono: "55-3456-7890", email: "miguel@email.com", compras: 1 },
+            { nombre: "Laura Garcia", telefono: "55-4567-8901", email: "laura@email.com", compras: 8 },
+            { nombre: "Roberto Diaz", telefono: "55-5678-9012", email: "roberto@email.com", compras: 2 },
+        ];
+
+        let currentModal = "";
+
+        // ===== LOGIN =====
+        function login() {
+            const password = document.getElementById("passwordInput").value;
+            if (password === "12345") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("appPage").style.display = "block";
+                renderAll();
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+                document.getElementById("passwordInput").value = "";
+                document.getElementById("passwordInput").focus();
+            }
+        }
+
+        document.getElementById("passwordInput").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") login();
+        });
+
+        function logout() {
+            document.getElementById("appPage").style.display = "none";
+            document.getElementById("loginPage").style.display = "flex";
+            document.getElementById("passwordInput").value = "";
+            document.getElementById("errorMsg").style.display = "none";
+            closeSidebar();
+        }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("open");
+            document.getElementById("sidebarOverlay").classList.toggle("show");
+        }
+
+        function closeSidebar() {
+            document.getElementById("sidebar").classList.remove("open");
+            document.getElementById("sidebarOverlay").classList.remove("show");
+        }
+
+        // ===== NAVEGACION =====
+        const pageTitles = {
+            dashboard: "Dashboard",
+            motos: "Catalogo de Motos",
+            refacciones: "Refacciones",
+            ventas: "Registro de Ventas",
+            clientes: "Clientes",
+        };
+
+        function navigate(section, navItem) {
+            document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+            document.getElementById("section-" + section).classList.add("active");
+
+            document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+            navItem.classList.add("active");
+
+            document.getElementById("pageTitle").textContent = pageTitles[section];
+            closeSidebar();
+        }
+
+        // ===== RENDER =====
+        function renderAll() {
+            renderMotos();
+            renderRefacciones();
+            renderVentas();
+            renderClientes();
+        }
+
+        const motoEmojis = {
+            "Naked": "\u{1F3CD}\u{FE0F}",
+            "Deportiva": "\u{1F3CE}\u{FE0F}",
+            "Adventure": "\u{26F0}\u{FE0F}",
+            "Scooter": "\u{1F6F5}",
+        };
+
+        function renderMotos() {
+            const grid = document.getElementById("motosGrid");
+            grid.innerHTML = motos.map(m => `
+                <div class="product-card">
+                    <div class="card-image">${motoEmojis[m.categoria] || "\u{1F3CD}\u{FE0F}"}</div>
+                    <div class="card-body">
+                        <div class="category">${m.categoria}</div>
+                        <h3>${m.nombre}</h3>
+                        <div class="description">${m.desc}</div>
+                        <div class="card-footer">
+                            <span class="price">$${m.precio.toLocaleString()}</span>
+                            <button class="btn-add" onclick="quickSale('${m.nombre}', ${m.precio})">Vender</button>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        const refEmojis = {
+            "Frenos": "\u{1F6D1}",
+            "Transmision": "\u{2699}\u{FE0F}",
+            "Motor": "\u{1F527}",
+            "Lubricantes": "\u{1F4A7}",
+            "Llantas": "\u{2B55}",
+            "Suspension": "\u{1F4AA}",
+        };
+
+        function renderRefacciones() {
+            const grid = document.getElementById("refaccionesGrid");
+            grid.innerHTML = refacciones.map(r => `
+                <div class="product-card">
+                    <div class="card-image">${refEmojis[r.categoria] || "\u{1F527}"}</div>
+                    <div class="card-body">
+                        <div class="category">${r.categoria}</div>
+                        <h3>${r.nombre}</h3>
+                        <div class="description">${r.desc}</div>
+                        <div class="card-footer">
+                            <span class="price">$${r.precio.toLocaleString()}</span>
+                            <button class="btn-add" onclick="quickSale('${r.nombre}', ${r.precio})">Vender</button>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderVentas() {
+            const tbody = document.getElementById("ventasTableBody");
+            tbody.innerHTML = ventas.map(v => `
+                <tr>
+                    <td>${v.id}</td>
+                    <td>${v.fecha}</td>
+                    <td>${v.cliente}</td>
+                    <td>${v.producto}</td>
+                    <td>$${v.monto.toLocaleString()}</td>
+                    <td><span class="badge ${v.estado === 'Completada' ? 'badge-success' : 'badge-pending'}">${v.estado}</span></td>
+                </tr>
+            `).join("");
+        }
+
+        function renderClientes() {
+            const tbody = document.getElementById("clientesTableBody");
+            tbody.innerHTML = clientes.map(c => `
+                <tr>
+                    <td>${c.nombre}</td>
+                    <td>${c.telefono}</td>
+                    <td>${c.email}</td>
+                    <td>${c.compras}</td>
+                </tr>
+            `).join("");
+        }
+
+        // ===== MODAL =====
+        function openModal(type) {
+            currentModal = type;
+            const overlay = document.getElementById("modalOverlay");
+            const title = document.getElementById("modalTitle");
+            const content = document.getElementById("modalContent");
+
+            if (type === "moto") {
+                title.textContent = "Nueva Moto";
+                content.innerHTML = `
+                    <div class="form-group"><label>Nombre</label><input id="f-nombre" placeholder="Ej: Honda CBR600"></div>
+                    <div class="form-group"><label>Categoria</label>
+                        <select id="f-categoria">
+                            <option>Naked</option><option>Deportiva</option><option>Adventure</option><option>Scooter</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Precio (MXN)</label><input id="f-precio" type="number" placeholder="0"></div>
+                    <div class="form-group"><label>Descripcion</label><textarea id="f-desc" rows="3" placeholder="Descripcion de la moto"></textarea></div>
+                `;
+            } else if (type === "refaccion") {
+                title.textContent = "Nueva Refaccion";
+                content.innerHTML = `
+                    <div class="form-group"><label>Nombre</label><input id="f-nombre" placeholder="Ej: Pastillas de freno"></div>
+                    <div class="form-group"><label>Categoria</label>
+                        <select id="f-categoria">
+                            <option>Frenos</option><option>Transmision</option><option>Motor</option><option>Lubricantes</option><option>Llantas</option><option>Suspension</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Precio (MXN)</label><input id="f-precio" type="number" placeholder="0"></div>
+                    <div class="form-group"><label>Descripcion</label><textarea id="f-desc" rows="3" placeholder="Descripcion de la refaccion"></textarea></div>
+                `;
+            } else if (type === "venta") {
+                title.textContent = "Nueva Venta";
+                const allProducts = [...motos.map(m => m.nombre), ...refacciones.map(r => r.nombre)];
+                const clienteOptions = clientes.map(c => `<option>${c.nombre}</option>`).join("");
+                const productOptions = allProducts.map(p => `<option>${p}</option>`).join("");
+                content.innerHTML = `
+                    <div class="form-group"><label>Cliente</label><select id="f-cliente">${clienteOptions}</select></div>
+                    <div class="form-group"><label>Producto</label><select id="f-producto">${productOptions}</select></div>
+                    <div class="form-group"><label>Monto (MXN)</label><input id="f-monto" type="number" placeholder="0"></div>
+                    <div class="form-group"><label>Estado</label>
+                        <select id="f-estado"><option>Completada</option><option>Pendiente</option></select>
+                    </div>
+                `;
+            } else if (type === "cliente") {
+                title.textContent = "Nuevo Cliente";
+                content.innerHTML = `
+                    <div class="form-group"><label>Nombre completo</label><input id="f-nombre" placeholder="Nombre del cliente"></div>
+                    <div class="form-group"><label>Telefono</label><input id="f-telefono" placeholder="55-0000-0000"></div>
+                    <div class="form-group"><label>Email</label><input id="f-email" type="email" placeholder="email@ejemplo.com"></div>
+                `;
+            }
+
+            overlay.classList.add("show");
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.remove("show");
+        }
+
+        function saveRecord() {
+            if (currentModal === "moto") {
+                const nombre = document.getElementById("f-nombre").value.trim();
+                const categoria = document.getElementById("f-categoria").value;
+                const precio = parseInt(document.getElementById("f-precio").value) || 0;
+                const desc = document.getElementById("f-desc").value.trim();
+                if (!nombre) return showNotification("Ingresa el nombre de la moto");
+                motos.push({ nombre, categoria, precio, desc: desc || "Sin descripcion." });
+                renderMotos();
+                showNotification("Moto agregada: " + nombre);
+            } else if (currentModal === "refaccion") {
+                const nombre = document.getElementById("f-nombre").value.trim();
+                const categoria = document.getElementById("f-categoria").value;
+                const precio = parseInt(document.getElementById("f-precio").value) || 0;
+                const desc = document.getElementById("f-desc").value.trim();
+                if (!nombre) return showNotification("Ingresa el nombre de la refaccion");
+                refacciones.push({ nombre, categoria, precio, desc: desc || "Sin descripcion." });
+                renderRefacciones();
+                showNotification("Refaccion agregada: " + nombre);
+            } else if (currentModal === "venta") {
+                const cliente = document.getElementById("f-cliente").value;
+                const producto = document.getElementById("f-producto").value;
+                const monto = parseInt(document.getElementById("f-monto").value) || 0;
+                const estado = document.getElementById("f-estado").value;
+                if (!monto) return showNotification("Ingresa el monto de la venta");
+                const id = ventas.length > 0 ? Math.max(...ventas.map(v => v.id)) + 1 : 1;
+                const fecha = new Date().toISOString().split("T")[0];
+                ventas.unshift({ id, fecha, cliente, producto, monto, estado });
+                renderVentas();
+                showNotification("Venta registrada: $" + monto.toLocaleString());
+            } else if (currentModal === "cliente") {
+                const nombre = document.getElementById("f-nombre").value.trim();
+                const telefono = document.getElementById("f-telefono").value.trim();
+                const email = document.getElementById("f-email").value.trim();
+                if (!nombre) return showNotification("Ingresa el nombre del cliente");
+                clientes.push({ nombre, telefono: telefono || "-", email: email || "-", compras: 0 });
+                renderClientes();
+                showNotification("Cliente agregado: " + nombre);
+            }
+
+            closeModal();
+            updateStats();
+        }
+
+        function quickSale(producto, precio) {
+            const id = ventas.length > 0 ? Math.max(...ventas.map(v => v.id)) + 1 : 1;
+            const fecha = new Date().toISOString().split("T")[0];
+            ventas.unshift({ id, fecha, cliente: "Venta directa", producto, monto: precio, estado: "Completada" });
+            renderVentas();
+            updateStats();
+            showNotification("Venta registrada: " + producto + " - $" + precio.toLocaleString());
+        }
+
+        function updateStats() {
+            document.getElementById("totalMotos").textContent = motos.length;
+            document.getElementById("totalRefacciones").textContent = refacciones.length;
+            document.getElementById("totalVentas").textContent = ventas.length;
+            document.getElementById("totalClientes").textContent = clientes.length;
+        }
+
+        // ===== NOTIFICACION =====
+        function showNotification(msg) {
+            const el = document.getElementById("notification");
+            el.textContent = msg;
+            el.classList.add("show");
+            setTimeout(() => el.classList.remove("show"), 3000);
+        }
+    </script>
+
+</body>
+</html>
